@@ -1,0 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MineOpen : MonoBehaviour
+{
+    public GameObject minePage;
+    void OnMouseDown()
+    {
+        minePage.SetActive(true);
+    }
+}
