@@ -1,0 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Stump : MonoBehaviour
+{
+    void OnMouseDown()
+    {
+        GameObject.Find("GameManager").GetComponent<GameManager>().wood =
+            GameObject.Find("GameManager").GetComponent<GameManager>().wood + 1;
+    }
+}
