@@ -1,0 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class WellTouch : MonoBehaviour
+{
+    public GameObject wellPage;
+    void OnMouseDown()
+    {
+        wellPage.SetActive(true);
+    }
+
+}
