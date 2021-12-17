@@ -1,0 +1,311 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GameManager : MonoBehaviour
+{
+    //게임 시작
+    public GameObject gameStart;
+    public GameObject agree;
+    public GameObject gameUI;
+    public GameObject touchPanel;
+    //UI
+    public GameObject buyTab;
+    public GameObject shellTab;
+    public GameObject shopPage;
+    public GameObject animalsPage;
+    public GameObject wellPage;
+    public GameObject minePage;
+    
+    public Text moneyValue;
+    public Text woodValue;
+    public Text ironValue;
+    public Text feedValue;
+    public Text wellmoneyValue;
+    public Text wellwoodValue;
+    public Text wellironValue;
+    public Text wellfeedValue;
+    //우물
+    public int moneyWell;
+    public int woodWell;
+    public int ironWell;
+    public int feedWell;
+    //재화
+    public int money;
+    public int wood;
+    public int iron;
+    public int feed;
+    //광산
+    int mineStack;
+    //농장
+    public int chickLevel;
+    public int chickenLevel;
+    public int pigLevel;
+    public int cowLevel;
+    int chickCash;
+    int chickenCash;
+    int pigCash;
+    int cowCash;
+    public Text totalLChick;
+    public Text totalLChicken;
+    public Text totalLPig;
+    public Text totalLCow;
+    //상점
+    public int chick;
+    public int chicken;
+    public int pig;
+    public int cow;
+    public Text totalChick;
+    public Text totalChicken;
+    public Text totalPig;
+    public Text totalCow;
+
+    void Start()
+    {
+        StartCoroutine(updateData());
+        StartCoroutine(updateAnimals());
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
+        moneyValue.text = money.ToString();
+        woodValue.text = wood.ToString();
+        ironValue.text = iron.ToString();
+        feedValue.text = feed.ToString();
+    }
+    IEnumerator updateData()
+    {
+        while (true)
+        {
+            WellReword();
+            yield return new WaitForSecondsRealtime(30.0f);
+        }
+
+    }
+    IEnumerator updateAnimals()
+    {
+        while (true)
+        {
+            AnimalsReword();
+            yield return new WaitForSecondsRealtime(5.0f);
+        }
+
+    }
+    void AnimalsReword()
+    {
+        Debug.Log("동물생산"); 
+        Debug.Log(chick);
+        Debug.Log(chickLevel);
+        money = money + 1 * chick * chickLevel;
+        Debug.Log(chicken);
+        Debug.Log(chickenLevel);
+        money = money + 3 * chicken * chickenLevel;
+        Debug.Log(pig);
+        Debug.Log(pigLevel);
+        money = money + 7 * pig * pigLevel;
+        Debug.Log(cow);
+        Debug.Log(cowLevel);
+        money = money + 10 * cow * cowLevel;
+    }
+    //우물
+
+    void Well()
+    {
+        money = moneyWell + money;
+        wood = woodWell + wood;
+        iron = ironWell + ironWell;
+    }
+    void WellReword()
+    {
+        Debug.Log("리워드가 쌓임");
+        moneyWell = moneyWell + 100;
+        woodWell = woodWell + 50;
+        ironWell = ironWell + 20;
+        feedWell = feedWell + 10;
+        wellmoneyValue.text = moneyWell.ToString();
+        wellwoodValue.text = woodWell.ToString();
+        wellironValue.text = ironWell.ToString();
+        wellfeedValue.text = feedWell.ToString();
+    }
+    public void WellOkBt()
+    {
+        Debug.Log("리워드를 받음");
+        Well();
+        wellPage.SetActive(false);
+        GameObject.Find("GameManager").GetComponent<GameManager>().Well();
+    }
+    //동물
+    public void FeedChick()
+    {
+        if (feed >= 3)
+        {
+            feed = feed - 3;
+            chickLevel = chickLevel + 1;
+            totalLChick.text = "병아리 : " + chickLevel.ToString() + " Lv";
+        }
+        else return;
+        
+    }
+    public void FeedChicken()
+    {
+        if (feed >= 10)
+        {
+            feed = feed - 3;
+            chickenLevel = chickenLevel + 1;
+            totalLChicken.text = "닭 : " + chickenLevel.ToString() + " Lv";
+        }
+        else return;
+
+    }
+    public void FeedPig()
+    {
+        if (feed >= 25)
+        {
+            feed = feed - 25;
+            pigLevel = pigLevel + 1;
+            totalLPig.text = "돼지 : " + pigLevel.ToString() + " Lv";
+        }
+        else return;
+
+    }
+    public void FeedCow()
+    {
+        if (feed >= 50)
+        {
+            feed = feed - 50;
+            cowLevel = chickenLevel + 1;
+            totalLCow.text = "소 : " + cowLevel.ToString() + " Lv";
+        }
+        else return;
+
+    }
+    public void AnimalsExit()
+    {
+        animalsPage.SetActive(false);
+    }
+    //상점구매
+    public void ChickBuy()
+    {
+        if (money >= 5000)
+        {
+            money = money - 5000;
+            chick = chick + 1;
+            totalChick.text = "병아리 : " + chick.ToString();
+        }
+        else
+        {
+            return;
+        }
+
+    }
+    public void ChickenBuy()
+    {
+        if (money >= 10000)
+        {
+            money = money - 10000;
+            chicken = chicken + 1;
+            totalChicken.text = "닭 : " + chicken.ToString();
+        }
+        else
+        {
+            return;
+        }
+
+    }
+    public void PigBuy()
+    {
+        if (money >= 25000)
+        {
+            money = money - 25000;
+            pig = pig + 1;
+            totalPig.text = "돼지 : " + pig.ToString();
+        }
+        else
+        {
+            return;
+        }
+
+    }
+    public void CowBuy()
+    {
+        if (money >= 50000)
+        {
+            money = money - 50000;
+            cow = cow + 1;
+            totalCow.text = "소 : " + cow.ToString();
+        }
+        else
+        {
+            return;
+        }
+
+    }
+    //상점판매
+    public void WoodShell()
+    {
+        if (wood >= 1)
+        {
+            wood = wood - 1;
+            money = money + 10;
+        }
+        else
+        {
+            return;
+        }
+    }
+    public void IronShell()
+    {
+        if (iron >= 1)
+        {
+            iron = iron - 1;
+            feed = feed + 5;
+        }
+        else
+        {
+            return;
+        }
+    }
+    //상점기타
+    public void ShopExit()
+    {
+        shopPage.SetActive(false);
+    }
+    public void BuyBt()
+    {
+        buyTab.SetActive(true);
+        shellTab.SetActive(false);
+    }
+    public void ShellBt()
+    {
+        shellTab.SetActive(true);
+        buyTab.SetActive(false);
+    }
+    //광산
+    public void mineBt()
+    {
+        if (mineStack >= 10)
+        {
+            iron = iron + 1;
+            mineStack = 0;
+        }
+        else mineStack = mineStack + 1;
+    }
+    public void mineExit()
+    {
+        minePage.SetActive(false);
+    }
+    //게임 시작 UI
+    public void GameStart()
+    {
+       gameStart.SetActive(false);
+        agree.SetActive(true);
+    }
+    public void Agree()
+    {
+        agree.SetActive(false);
+        gameUI.SetActive(true);
+        touchPanel.SetActive(true);
+    }
+}
